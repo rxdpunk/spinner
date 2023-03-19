@@ -64,25 +64,28 @@ function App() {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = canvas.width / 2 - 10;
-
+  
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
     ctx.arc(centerX, centerY, radius, angle.start, angle.end);
     ctx.closePath();
     ctx.fillStyle = color;
-    ctx.lineJoin = 'round';
     ctx.fill();
     ctx.save();
-
+  
     ctx.translate(centerX, centerY);
     ctx.rotate((angle.start + angle.end) / 2);
-
-    ctx.font = '16px Arial'; // Add this line to set the font size and family
+  
+    const fontSize = Math.max(10, Math.min(20, 200 / walletAddresses.length));
+    ctx.font = `${fontSize}px Arial`;
     ctx.textAlign = 'right';
     ctx.fillStyle = '#000';
-    ctx.fillText(text, radius - 20, 2.5); // Adjust the position of the text
+    ctx.fillText(text, radius - 20, 2.5);
+  
     ctx.restore();
   }
+  
+  
 
   function updateWalletAddresses() {
     const inputAddresses = walletAddressesRef.current.value
@@ -128,13 +131,12 @@ function App() {
     const totalAngle = rotations * 2 * Math.PI + (targetSegment + 0.5 + offset) * targetAngle;
   
     spinnerWrapper.style.transform = `rotate(${totalAngle}rad)`;
-    spinnerWrapper.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-  
+    spinnerWrapper.style.transition = 'transform 14s cubic-bezier(0.25, 0.1, 0.25, 1)';
     return new Promise((resolve) => {
       setTimeout(() => {
-        setIsPlaying(false);
         resolve(walletAddresses[targetSegment]);
-      }, 5000);
+        setIsPlaying(false);
+      }, 14000);
     });
   }
   
@@ -164,7 +166,7 @@ function App() {
     }, 1000);
   
       // Wait for 1 second before spinning again
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
     }
   }
   
