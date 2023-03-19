@@ -6,9 +6,9 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const [walletAddresses, setWalletAddresses] = useState([
-    'YOUR-WALLET-ADDRESS-1',
-    'YOUR-WALLET-ADDRESS-2',
-    'YOUR-WALLET-ADDRESS-3',
+    'Your Wheel Entry 1',
+    'Your Wheel Entry 2',
+    'Your Wheel Entry 3',
   ]);
 
   const [segmentColors, setSegmentColors] = useState([]);
