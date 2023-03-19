@@ -177,37 +177,41 @@ function App() {
   
   return (
     <div className="App">
-      <div className="spinner-container">
-        <div className="arrow"></div>
-        <div className="spinner-wrapper" ref={spinnerWrapperRef}>
-          <canvas ref={canvasRef} width="800" height="800"></canvas>
+        <div className="spinner-container">
+         <div className="arrow"></div>
+          <div className="spinner-wrapper" ref={spinnerWrapperRef}>
+            <canvas ref={canvasRef} width="800" height="800"></canvas>
+          </div>
+        </div>
+        <div className="controls">
+          <div className="wallet-input">
+            <button type="button" onClick={updateWalletAddresses}>
+              Update Wallet Addresses
+            </button>
+            <textarea
+              ref={walletAddressesRef}
+              defaultValue={walletAddresses.join('\n')}
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="num-winners">Number of winners: </label>
+            <input
+              type="number"
+              min="1"
+              id="num-winners"
+              defaultValue="1"
+              ref={numWinnersRef}
+            />
+          </div>
+          <button type="button" onClick={spinMultiple}>Spin</button>
+          <ul ref={winnersListRef}></ul>
         </div>
       </div>
-      <div className="controls">
-        <div className="wallet-input">
-          <button type="button" onClick={updateWalletAddresses}>
-            Update Wallet Addresses
-          </button>
-          <textarea
-            ref={walletAddressesRef}
-            defaultValue={walletAddresses.join('\n')}
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="num-winners">Number of winners: </label>
-          <input
-            type="number"
-            min="1"
-            id="num-winners"
-            defaultValue="1"
-            ref={numWinnersRef}
-          />
-        </div>
-        <button type="button" onClick={spinMultiple}>Spin</button>
-        <ul ref={winnersListRef}></ul>
-      </div>
-    </div>
+    
   );
+  
+  
+  
   
   
 }
