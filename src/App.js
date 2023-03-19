@@ -60,15 +60,14 @@ function App() {
 
   function drawSegment(angle, color, text) {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = canvas.width / 2 - 10;
   
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
     ctx.arc(centerX, centerY, radius, angle.start, angle.end);
-    ctx.closePath();
+    ctx.lineTo(centerX, centerY);
     ctx.fillStyle = color;
     ctx.fill();
     ctx.save();
@@ -78,12 +77,14 @@ function App() {
   
     const fontSize = Math.max(10, Math.min(20, 200 / walletAddresses.length));
     ctx.font = `${fontSize}px Arial`;
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#000';
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#000";
     ctx.fillText(text, radius - 20, 2.5);
   
     ctx.restore();
   }
+  
+  
   
   
 
@@ -111,15 +112,15 @@ function App() {
   async function spinAndWait() {
     const targetSegment = Math.floor(Math.random() * walletAddresses.length);
     const targetAngle = (2 * Math.PI) / walletAddresses.length;
-    const spinnerWrapper = spinnerWrapperRef.current;
+    const canvas = canvasRef.current;
     setIsPlaying(true);
   
     // Reset the transform and transition properties
-    spinnerWrapper.style.transform = '';
-    spinnerWrapper.style.transition = '';
+    canvas.style.transform = '';
+    canvas.style.transition = '';
   
     // Force a reflow to ensure the transition is properly reset
-    void spinnerWrapper.offsetWidth;
+    void canvas.offsetWidth;
   
     // Generate a random number of rotations (between 5 and 10)
     const rotations = 5 + Math.floor(Math.random() * 6);
@@ -128,10 +129,11 @@ function App() {
     const offset = Math.random() * 0.05 - 0.025; // Change this value to control the offset range
   
     // Calculate the total angle to spin, including the rotations and the offset
-    const totalAngle = rotations * 2 * Math.PI + (targetSegment + 0.5 + offset) * targetAngle;
+    const totalAngle =
+      rotations * 2 * Math.PI + (targetSegment + 0.5 + offset) * targetAngle;
   
-    spinnerWrapper.style.transform = `rotate(${totalAngle}rad)`;
-    spinnerWrapper.style.transition = 'transform 14s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    canvas.style.transform = `rotate(${totalAngle}rad)`;
+    canvas.style.transition = 'transform 14s cubic-bezier(0.25, 0.1, 0.25, 1)';
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(walletAddresses[targetSegment]);
@@ -139,6 +141,7 @@ function App() {
       }, 14000);
     });
   }
+  
   
     async function spinMultiple() {
     const numWinners = parseInt(numWinnersRef.current.value);
