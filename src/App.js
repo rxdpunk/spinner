@@ -26,11 +26,12 @@ function App() {
       const endAngle = (i + 1) * segmentAngle;
       drawSegment(
         { start: startAngle, end: endAngle },
-        segmentColors[i],
+        i < segmentColors.length ? segmentColors[i] : getRandomColor(),
         walletAddresses[i]
       );
     }
-  }, [walletAddresses, segmentColors]);
+  }, [walletAddresses, segmentColors, getRandomColor]);
+  
 
   useEffect(() => {
     drawWheel();
