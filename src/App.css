@@ -1,4 +1,10 @@
+:root {
+  --spinner-size: 600px;
+}
+
 .App {
+  
+
   display: grid;
   grid-template-columns: 75% 25%;
   grid-template-rows: 10% 85% 05%;
@@ -44,14 +50,25 @@
   position: absolute;
   width: 0;
   height: 0;
-  border-left: calc(var(--spinner-size) * 0.03) solid transparent;
-  border-right: calc(var(--spinner-size) * 0.03) solid transparent;
-  border-bottom: calc(var(--spinner-size) * 0.03) solid #000;
-  top: calc((var(--spinner-size) / -2) - (var(--spinner-size) * 0.03));
-  left: calc(50% - (var(--spinner-size) * 0.03));
-  transform: rotate(180deg);
+  border-left: calc(var(--spinner-size) * 0.06) solid transparent;
+  border-right: calc(var(--spinner-size) * 0.06) solid transparent;
+  border-bottom: calc(var(--spinner-size) * 0.06) solid #000;
+  transform: translateY(calc(-0.5 * var(--spinner-size))) rotate(180deg);
   z-index: 2;
 }
+
+.controls label, .controls ul {
+  color: white;
+}
+
+.top-row {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .controls {
   grid-column: 2;
@@ -66,6 +83,7 @@
   width: var(--spinner-size);
   height: var(--spinner-size);
   position: relative;
+  z-index: 1;
 }
 
 #spinner {

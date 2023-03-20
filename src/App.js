@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './App.css';
 import spinnerSound from './spinner.wav';
+import wheelOfDestinyText from './WheelofDestinyText.png';
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -19,6 +20,44 @@ function App() {
   const numWinnersRef = useRef(null);
   const winnersListRef = useRef(null);
 
+  const getRandomColor = useCallback(() => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }, []);
+
+  const drawSegment = useCallback(
+    (angle, color, text) => {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = canvas.width / 2 - 10;
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, angle.start, angle.end);
+      ctx.lineTo(centerX, centerY);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.save();
+
+      ctx.translate(centerX, centerY);
+      ctx.rotate((angle.start + angle.end) / 2);
+
+      const fontSize = Math.max(10, Math.min(20, 200 / walletAddresses.length));
+      ctx.font = `${fontSize}px Arial`;
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#000';
+      ctx.fillText(text, radius - 20, 2.5);
+
+      ctx.restore();
+    },
+    [walletAddresses.length]
+  );
+
   const drawWheel = useCallback(() => {
     const segmentAngle = (2 * Math.PI) / walletAddresses.length;
     for (let i = 0; i < walletAddresses.length; i++) {
@@ -30,8 +69,7 @@ function App() {
         walletAddresses[i]
       );
     }
-  }, [walletAddresses, segmentColors, getRandomColor]);
-  
+  }, [walletAddresses, segmentColors, getRandomColor, drawSegment]);
 
   useEffect(() => {
     drawWheel();
@@ -49,45 +87,6 @@ function App() {
       audioRef.current.currentTime = 0;
     }
   }, [isPlaying]);
-
-  function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  function drawSegment(angle, color, text) {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const radius = canvas.width / 2 - 10;
-  
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, angle.start, angle.end);
-    ctx.lineTo(centerX, centerY);
-    ctx.fillStyle = color;
-    ctx.fill();
-    ctx.save();
-  
-    ctx.translate(centerX, centerY);
-    ctx.rotate((angle.start + angle.end) / 2);
-  
-    const fontSize = Math.max(10, Math.min(20, 200 / walletAddresses.length));
-    ctx.font = `${fontSize}px Arial`;
-    ctx.textAlign = "right";
-    ctx.fillStyle = "#000";
-    ctx.fillText(text, radius - 20, 2.5);
-  
-    ctx.restore();
-  }
-  
-  
-  
-  
 
   function updateWalletAddresses() {
     const inputAddresses = walletAddressesRef.current.value
@@ -180,9 +179,14 @@ function App() {
         <div className="spinner-container">
          <div className="arrow"></div>
           <div className="spinner-wrapper" ref={spinnerWrapperRef}>
-            <canvas ref={canvasRef} width="800" height="800"></canvas>
+            <canvas ref={canvasRef} width="600" height="600"></canvas>
           </div>
         </div>
+        <div className="top-row">
+        <img src={wheelOfDestinyText} alt="Wheel of Destiny" />
+
+</div>
+
         <div className="controls">
           <div className="wallet-input">
             <button type="button" onClick={updateWalletAddresses}>
